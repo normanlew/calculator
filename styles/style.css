@@ -1,0 +1,44 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.theCalculator {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    
+}
+
+#result {
+    height: 50px;
+    text-align: right;
+    font-size: 30px;
+    max-width: 500px;
+    width: 100%;
+    padding-right: 2px;
+    border: 1px solid black;
+    border-style:solid
+}
+
+button {
+    height: 50px;
+    flex-grow: 1;
+    flex-basis: 0;
+    font-weight: bold;
+    font-size: larger;
+    
+}
