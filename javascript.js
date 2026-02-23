@@ -1,17 +1,18 @@
-let state = "firstOperand" // possible values: firstOperand, secondOperand, 
+let firstOperand = true;
 // let firstNumber = true;
-let firstOperand = "0";
-let secondOperand = "0";
+let firstOperandValue = "";
+// let secondOperand = "0";
 let operator = "";
 
 const displayText = document.getElementById("result");
 
 function clear() {
-    state = "firstOperand";
-    firstOperand = "0";
-    secondOperand = "0";
+    firstOperand = true;
+    firstOperandValue = "";
+    // secondOperand = "0";
     operator = ""
-    displayText.value = firstOperand;
+    displayText.value = "0";
+    // displayText.value = "firstOperand";
     // state = "clear";
 }
 
@@ -31,87 +32,41 @@ function handleButtonPush(buttonValue) {
         // let displayedValue = displayText.value;
         let buttonValueNumeric = Number(buttonValue);
         let buttonValueNumericIsNan = Number.isNaN(buttonValueNumeric);
+        let numberShowing = displayText.value;
 
         if (!buttonValueNumericIsNan)  {
-            switch (state) {
-                case "firstOperand":
-                    if (buttonValue === "0") {
-                        if (!(firstOperand === "0" || firstOperand === "-0")) {
-                            firstOperand += buttonValue;
-                        }
-                    }
-                    else {
-                        if (firstOperand === "0"){
-                            firstOperand = buttonValue;
-                        }
-                        else if (firstOperand === "-0") {
-                            firstOperand = "-" + buttonValue;
-                        }
-                        else {
-                            firstOperand += buttonValue;
-                        }
-                    }
-                    displayText.value = firstOperand;
-                    break;
-                
-                // case "operator":
-                //     state = "secondOperand";
-                //     secondOperand = buttonValue;
-                //     displayText.value = secondOperand;
-                //     break;
-                
-                case "secondOperand":
-                    if (buttonValue === "0") {
-                        if (!(secondOperand === "0" || secondOperand === "-0")) {
-                            secondOperand += buttonValue;
-                        }
-                    }
-                    else {
-                        if (secondOperand === "0"){
-                            secondOperand = buttonValue;
-                        }
-                        else if (secondOperand === "-0") {
-                            secondOperand = "-" + buttonValue;
-                        }
-                        else {
-                            secondOperand += buttonValue;
-                        }
-                    }
-                    displayText.value = secondOperand;
-                    break;
+            if (buttonValue === "0") {
+                if (!(numberShowing === "0" || numberShowing === "-0")) {
+                    numberShowing += buttonValue;
+                }
             }
+            else {
+                if (numberShowing === "0"){
+                    numberShowing = buttonValue;
+                }
+                else if (numberShowing === "-0") {
+                    numberShowing = "-" + buttonValue;
+                }
+                else {
+                    numberShowing += buttonValue;
+                }
+            }
+            displayText.value = numberShowing;
         }    
         else if (buttonValue === "+ / −") {
             console.log("buttonValue is + -");
-            switch (state) {
-                case "firstOperand":
-                    if (firstOperand === "0") {
-                        firstOperand = "-0";
-                    }
-                    else if (firstOperand === "-0") {
-                        firstOperand === "0";
-                    }
-                    else {
-                        let firstOperandNumberic = -Number(firstOperand);
-                        firstOperand = firstOperandNumberic.toString();
-                    }
-                    displayText.value = firstOperand;
-                    break;
-                
-                case "secondOperand":
-                    if (secondOperand === "0") {
-                        secondOperand = "-0";
-                    }
-                    else if (secondOperand === "-0") {
-                        secondOperand === "0";
-                    }
-                    else {
-                        let secondOperandNumberic = -Number(secondOperand);
-                        secondOperand = secondOperandNumberic.toString();
-                    }
-                    displayText.value = secondOperand;
-                    break;
+            if (numberShowing === "0") {
+                numberShowing = "-0";
             }
+            else if (numberShowing === "-0") {
+                // console.log("number showing is " + numberShowing);
+                numberShowing = "0";
+            }
+            else {
+                let numberShowingNumeric = -Number(numberShowing);
+                numberShowing = numberShowingNumeric.toString();
+            }
+            displayText.value = numberShowing;
         }
     }
 
