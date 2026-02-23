@@ -68,6 +68,13 @@ function handleButtonPush(buttonValue) {
             }
             displayText.value = numberShowing;
         }
+
+        else if (buttonValue === ".") {
+            if (!numberShowing.includes(".")) {
+                numberShowing += ".";
+                displayText.value = numberShowing;
+            }
+        }
     }
 
 
