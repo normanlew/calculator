@@ -1,23 +1,122 @@
-// let state = "clear" // possible values: clear, firstOperand, secondOperand, 
-let firstOperand = "";
-let secondOperand = "";
+let state = "firstOperand" // possible values: firstOperand, secondOperand, 
+// let firstNumber = true;
+let firstOperand = "0";
+let secondOperand = "0";
 let operator = "";
 
 const displayText = document.getElementById("result");
 
 function clear() {
-    firstOperand = "";
-    secondOperand = "";
-    operator = "";
-    displayText.value = "0";
+    state = "firstOperand";
+    firstOperand = "0";
+    secondOperand = "0";
+    operator = ""
+    displayText.value = firstOperand;
     // state = "clear";
 }
 
 clear();
 
-function handleButtonPush(x) {
-    console.log("You pushed " + x);
-    // let xNumeric = Number(x);
+function handleButtonPush(buttonValue) {
+    // console.log("You pushed " + buttonValue);
+    // console.log(buttonValue === "+ / −")
+    // console.log(buttonValue === "9")
+    // firstOperand += x;
+    // displayText.value = firstOperand;
+
+    if(buttonValue === "Clear") {
+        clear();
+    }
+    else {
+        // let displayedValue = displayText.value;
+        let buttonValueNumeric = Number(buttonValue);
+        let buttonValueNumericIsNan = Number.isNaN(buttonValueNumeric);
+
+        if (!buttonValueNumericIsNan)  {
+            switch (state) {
+                case "firstOperand":
+                    if (buttonValue === "0") {
+                        if (!(firstOperand === "0" || firstOperand === "-0")) {
+                            firstOperand += buttonValue;
+                        }
+                    }
+                    else {
+                        if (firstOperand === "0"){
+                            firstOperand = buttonValue;
+                        }
+                        else if (firstOperand === "-0") {
+                            firstOperand = "-" + buttonValue;
+                        }
+                        else {
+                            firstOperand += buttonValue;
+                        }
+                    }
+                    displayText.value = firstOperand;
+                    break;
+                
+                // case "operator":
+                //     state = "secondOperand";
+                //     secondOperand = buttonValue;
+                //     displayText.value = secondOperand;
+                //     break;
+                
+                case "secondOperand":
+                    if (buttonValue === "0") {
+                        if (!(secondOperand === "0" || secondOperand === "-0")) {
+                            secondOperand += buttonValue;
+                        }
+                    }
+                    else {
+                        if (secondOperand === "0"){
+                            secondOperand = buttonValue;
+                        }
+                        else if (secondOperand === "-0") {
+                            secondOperand = "-" + buttonValue;
+                        }
+                        else {
+                            secondOperand += buttonValue;
+                        }
+                    }
+                    displayText.value = secondOperand;
+                    break;
+            }
+        }    
+        else if (buttonValue === "+ / −") {
+            console.log("buttonValue is + -");
+            switch (state) {
+                case "firstOperand":
+                    if (firstOperand === "0") {
+                        firstOperand = "-0";
+                    }
+                    else if (firstOperand === "-0") {
+                        firstOperand === "0";
+                    }
+                    else {
+                        let firstOperandNumberic = -Number(firstOperand);
+                        firstOperand = firstOperandNumberic.toString();
+                    }
+                    displayText.value = firstOperand;
+                    break;
+                
+                case "secondOperand":
+                    if (secondOperand === "0") {
+                        secondOperand = "-0";
+                    }
+                    else if (secondOperand === "-0") {
+                        secondOperand === "0";
+                    }
+                    else {
+                        let secondOperandNumberic = -Number(secondOperand);
+                        secondOperand = secondOperandNumberic.toString();
+                    }
+                    displayText.value = secondOperand;
+                    break;
+            }
+        }
+    }
+
+
+
 
     // // console.log(xNumeric);
     // if (Number.isNaN(xNumeric)) {
@@ -79,7 +178,7 @@ for (const button of buttons) {
     // console.log(button.textContent);
     button.addEventListener("click", () => {
         // console.log(button.textContent);
-        handleButtonPush(button.textContent);
+        handleButtonPush(button.value);
     });
 }
 
