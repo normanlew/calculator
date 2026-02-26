@@ -245,17 +245,38 @@ function handleButtonPush(buttonValue) {
         }
 
         else if (buttonValue === ".") {
-            postOperation = false;
-            if (!numberShowing.includes(".")) {
-                numberShowing += ".";
-                displayText.value = numberShowing;
+            switch (state) {
+                case "firstOperand":
+                    if (!firstOperandValue.includes(".")) {
+                        firstOperandValue += ".";
+                    }
+                    displayText.value = firstOperandValue;
+                    break;
+                
+                case "secondOperand":
+                    if (!secondOperandValue.includes(".")) {
+                        secondOperandValue += ".";
+                    }
+                    displayText.value = secondOperandValue;
+                    break;   
+                    
+                case "postOperation":
+                    firstOperandValue = "0.";
+                    displayText.value = firstOperandValue;
+                    state = "firstOperand";
+                    break;
             }
-            if (firstOperand) {
-                firstOperandValue = numberShowing;
-            }
-            else {
-                secondOperandValue = numberShowing;
-            }
+            // postOperation = false;
+            // if (!numberShowing.includes(".")) {
+            //     numberShowing += ".";
+            //     displayText.value = numberShowing;
+            // }
+            // if (firstOperand) {
+            //     firstOperandValue = numberShowing;
+            // }
+            // else {
+            //     secondOperandValue = numberShowing;
+            // }
         }
         else if (["÷", "−", "+", "X"].includes(buttonValue)) {
             postOperation = false;
