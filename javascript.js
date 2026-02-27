@@ -137,11 +137,13 @@ function handleButtonPush(buttonValue) {
                     break;
 
                 case "secondOperand":
-                    firstOperandValue = operate(firstOperandValue, secondOperandValue, operatorValue);
-                    operatorValue = buttonValue;
-                    state = "postCalculation";
-                    secondOperandValueIsPostCalculation = true;
-                    displayText.value = firstOperandValue;
+                    if (!secondOperandValueIsPostCalculation) {
+                        firstOperandValue = operate(firstOperandValue, secondOperandValue, operatorValue);
+                        operatorValue = buttonValue;
+                        state = "postCalculation";
+                        secondOperandValueIsPostCalculation = true;
+                        displayText.value = firstOperandValue;
+                    }
                     break;
 
                 case "postCalculation":
@@ -157,7 +159,6 @@ function handleButtonPush(buttonValue) {
                 secondOperandValueIsPostCalculation = true;
                 displayText.value = firstOperandValue;
             }
-            
         }
     }
 }
