@@ -27,9 +27,9 @@ function handleButtonPush(buttonValue) {
         
         if (!buttonValueNumericIsNan) {  
             if (state === "postCalculation") {
-                    firstOperandValue = buttonValue;
-                    state = "firstOperand";
-                    displayText.text = firstOperandValue;
+                displayText.value = buttonValue;
+                firstOperandValue = buttonValue;
+                state = "firstOperand";
             }   
             else {
                 if (state === "secondOperand" && secondOperandValueIsPostCalculation) {
@@ -81,15 +81,11 @@ function handleButtonPush(buttonValue) {
                     break;
 
                 case "postCalculation":
-                    if (firstOperandValue === "0") {
-                        firstOperandValue = "-0";
-                    }
-                    else if (firstOperandValue === "-0") {
-                        firstOperandValue = "0";
+                    if (firstOperandValue.includes("-")) {
+                        firstOperandValue = firstOperandValue.substring(1,);
                     }
                     else {
-                        let firstOperandValueNumeric = -Number(firstOperandValue);
-                        firstOperandValue = firstOperandValueNumeric.toString();
+                        firstOperandValue = "-" + firstOperandValue;
                     }
                     displayText.value = firstOperandValue;
                     break;
@@ -110,7 +106,7 @@ function handleButtonPush(buttonValue) {
                             let secondOperandValueNumeric = -Number(secondOperandValue);
                             secondOperandValue = secondOperandValueNumeric.toString();
                         }
-                }   
+                    }   
                     displayText.value = secondOperandValue;
                     break;
             }
@@ -145,7 +141,6 @@ function handleButtonPush(buttonValue) {
         }
 
         else if (["÷", "−", "+", "X"].includes(buttonValue)) {
-            console.log("here");
             switch (state) {
                 case "firstOperand":
                     operatorValue = buttonValue;
@@ -168,7 +163,7 @@ function handleButtonPush(buttonValue) {
         }
         else if (buttonValue === "=") {
             if (!(operatorValue === "")) {
-                firstOperandValue = operate(firstOperandValue, secondOperandValue, operatorValue);
+                firstOperandValue = (operate(firstOperandValue, secondOperandValue, operatorValue)).toString();
                 state = "postCalculation";
                 secondOperandValueIsPostCalculation = true;
                 displayText.value = firstOperandValue;
