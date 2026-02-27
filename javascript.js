@@ -25,57 +25,43 @@ function handleButtonPush(buttonValue) {
         let buttonValueNumeric = Number(buttonValue);
         let buttonValueNumericIsNan = Number.isNaN(buttonValueNumeric);
         
-        if (!buttonValueNumericIsNan) {     
-            switch(state) {
-                case "firstOperand": 
-                    if (buttonValue === "0") {
-                        if (!(firstOperandValue === "0" || firstOperandValue === "-0")) {
-                            firstOperandValue += buttonValue;
-                        }
-                    }
-                    else {
-                        if (firstOperandValue === "0") {
-                            firstOperandValue = buttonValue;
-                        }
-                        else if (firstOperandValue === "-0") {
-                            firstOperandValue = "-" + buttonValue;
-                        }
-                        else firstOperandValue += buttonValue;
-                    }
-                    displayText.value = firstOperandValue;
-                    break;
-
-                case "secondOperand":
-                    if (secondOperandValueIsPostCalculation) {
-                        secondOperandValue = buttonValue;
-                        secondOperandValueIsPostCalculation = false;
-                    }
-                    else {
-                        if (buttonValue === "0") {
-                            if (!(secondOperandValue === "0" || secondOperandValue === "-0")) {
-                                secondOperandValue += buttonValue;
-                            }
-                        }
-                        else {
-                            if (secondOperandValue === "0") {
-                                secondOperandValue = buttonValue;
-                            }
-                            else if (secondOperandValue === "-0") {
-                                secondOperandValue = "-" + buttonValue;
-                            }
-                            else secondOperandValue += buttonValue;
-                        }
-                    }
-                    displayText.value = secondOperandValue;
-                    break;
-
-                case "postCalculation":
+        if (!buttonValueNumericIsNan) {  
+            if (state === "postCalculation") {
                     firstOperandValue = buttonValue;
                     state = "firstOperand";
                     displayText.text = firstOperandValue;
-                    break;
+            }   
+            else {
+                if (state === "secondOperand" && secondOperandValueIsPostCalculation) {
+                    secondOperandValue = buttonValue;
+                    secondOperandValueIsPostCalculation = false;
+                    displayText.value = secondOperandValue;
+                }       
+                else {
+                    let numberToDisplay = (state === "firstOperand") ? firstOperandValue : secondOperandValue;
+                    if (buttonValue === "0") {
+                        if (!(numberToDisplay === "0" || numberToDisplay === "-0")) {
+                            numberToDisplay += buttonValue;
+                        }
+                    }
+                    else {
+                        if (numberToDisplay === "0") {
+                            numberToDisplay = buttonValue;
+                        }
+                        else if (numberToDisplay === "-0") {
+                            numberToDisplay = "-" + buttonValue;
+                        }
+                        else numberToDisplay += buttonValue;
+                    }
+                    if (state === "firstOperand") {
+                        firstOperandValue = numberToDisplay;
+                    }
+                    else if (state === "secondOperand") {
+                        secondOperandValue = numberToDisplay;
+                    }
+                    displayText.value = numberToDisplay;
+                }
             }
-                    
         }    
 
         else if (buttonValue === "+ / −") {
@@ -159,6 +145,7 @@ function handleButtonPush(buttonValue) {
         }
 
         else if (["÷", "−", "+", "X"].includes(buttonValue)) {
+            console.log("here");
             switch (state) {
                 case "firstOperand":
                     operatorValue = buttonValue;
