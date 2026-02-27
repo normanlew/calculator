@@ -65,50 +65,39 @@ function handleButtonPush(buttonValue) {
         }    
 
         else if (buttonValue === "+ / −") {
-            switch (state) {
-                case "firstOperand":
-                    if (firstOperandValue === "0") {
-                        firstOperandValue = "-0";
-                    }
-                    else if (firstOperandValue === "-0") {
-                        firstOperandValue = "0";
-                    }
-                    else {
-                        let firstOperandValueNumeric = -Number(firstOperandValue);
-                        firstOperandValue = firstOperandValueNumeric.toString();
-                    }
-                    displayText.value = firstOperandValue;
-                    break;
-
-                case "postCalculation":
-                    if (firstOperandValue.includes("-")) {
-                        firstOperandValue = firstOperandValue.substring(1,);
-                    }
-                    else {
-                        firstOperandValue = "-" + firstOperandValue;
-                    }
-                    displayText.value = firstOperandValue;
-                    break;
-
-                case "secondOperand":
-                    if (secondOperandValueIsPostCalculation) {
-                        secondOperandValue = "-0";
-                        secondOperandValueIsPostCalculation = false;
-                    }
-                    else {
-                        if (secondOperandValue === "0") {
-                            secondOperandValue = "-0";
-                        }
-                        else if (secondOperandValue === "-0") {
-                            secondOperandValue = "0";
-                        }
-                        else {
-                            let secondOperandValueNumeric = -Number(secondOperandValue);
-                            secondOperandValue = secondOperandValueNumeric.toString();
-                        }
-                    }   
-                    displayText.value = secondOperandValue;
-                    break;
+            if (state === "postCalculation") {
+                if (firstOperandValue.includes("-")) {
+                    firstOperandValue = firstOperandValue.substring(1,);
+                }
+                else {
+                    firstOperandValue = "-" + firstOperandValue;
+                }
+                displayText.value = firstOperandValue;  
+            }
+            else if (state === "secondOperand" && secondOperandValueIsPostCalculation) {
+                secondOperandValue = "-0";
+                secondOperandValueIsPostCalculation = false;
+                displayText.value = secondOperandValue;
+            } 
+            else {
+                let numberToDisplay = displayText.value;
+                if (numberToDisplay === "0") {
+                    numberToDisplay = "-0";
+                }
+                else if (numberToDisplay === "-0") {
+                    numberToDisplay = "0";
+                }
+                else {
+                    let numberToDisplayNumber = -Number(numberToDisplay);
+                    numberToDisplay = numberToDisplayNumber.toString();
+                }
+                if (state === "firstOperand") {
+                    firstOperandValue = numberToDisplay;
+                }
+                else {
+                    secondOperandValue = numberToDisplay;
+                }
+                displayText.value = numberToDisplay;
             }
         }
 
