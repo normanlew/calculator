@@ -3,6 +3,7 @@ let firstOperandValue = "0";
 let secondOperandValue = "0";
 let secondOperandValueIsPostCalculation = false;
 let secondOperandHasBeenEntered = false;
+let triedToDivideByZero = false;
 let operatorValue = "";
 
 const displayText = document.getElementById("result");
@@ -11,6 +12,7 @@ function clear() {
     state = "firstOperand";
     secondOperandValueIsPostCalculation = false
     secondOperandHasBeenEntered = false;
+    triedToDivideByZero = false;
     firstOperandValue = "0";
     secondOperandValue = "0"
     operatorValue = ""
@@ -20,6 +22,14 @@ function clear() {
 clear();
 
 function handleButtonPush(buttonValue) {
+    console.log("state: " + state);
+    console.log("operatorValue: " + operatorValue);
+    console.log("firstOperandValue: " + firstOperandValue);
+    console.log("secondOperandValue: " + secondOperandValue);
+    console.log("secondOperandValueHasBeenEntered: " + secondOperandHasBeenEntered);
+    console.log("secondOperandValueIsPostCalculation: " + secondOperandValueIsPostCalculation);
+    console.log("triedToDivideByZero: " + triedToDivideByZero);
+    console.log("-------------------------------------------------");
     if(buttonValue === "Clear") {
         clear();
     }
@@ -135,7 +145,7 @@ function handleButtonPush(buttonValue) {
             }
         }
 
-        else if (["÷", "−", "+", "X"].includes(buttonValue)) {
+        else if (["÷", "−", "+", "X"].includes(buttonValue)) { 
             switch (state) {
                 case "firstOperand":
                     operatorValue = buttonValue;
@@ -145,19 +155,29 @@ function handleButtonPush(buttonValue) {
                     break;
 
                 case "secondOperand":
-                    if (secondOperandHasBeenEntered) {
+                    if (triedToDivideByZero) {
+                        console.log("HERE");
+                        operatorValue = buttonValue;
+                        triedToDivideByZero = false;
+                    }
+                    else if (secondOperandHasBeenEntered) {
                         if (operatorValue === "÷" && numberIsAllZeros(secondOperandValue)) {
+                            triedToDivideByZero = true;
                             alert ("Cannot divide by zero!");
                         }   
                         else {
                             firstOperandValue = operate(firstOperandValue, secondOperandValue, operatorValue);
                             operatorValue = buttonValue;
                             secondOperandValue = "0";
+                            secondOperandHasBeenEntered = false;
+                            triedToDivideByZero = false;
+                            state = "secondOperand";
                             displayText.value = firstOperandValue;
                         }
                     }
                     else {
                         operatorValue = buttonValue
+                        triedToDivideByZero = false;
                     }
                     break;
 
@@ -171,6 +191,7 @@ function handleButtonPush(buttonValue) {
         }
         else if (buttonValue === "=") {
             if (operatorValue === "÷" && numberIsAllZeros(secondOperandValue) && secondOperandHasBeenEntered) {
+                triedToDivideByZero = true;
                 alert ("Cannot divide by zero!");
             }   
             else if (state === "secondOperand" && secondOperandHasBeenEntered) {
