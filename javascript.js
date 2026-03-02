@@ -165,14 +165,9 @@ function handleButtonPush(buttonValue) {
             }
         }
         else if (buttonValue === "=") {
-            const excludedNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-            const noneIncluded = excludedNumbers.every(num => !secondOperandValue.includes(num));
-            if (secondOperandValue === "0" || secondOperandValue === "0." || secondOperandValue == "0.0" ||
-                (secondOperandValue.length > 2 && secondOperandValue.substring(0,3) == "0.0" && 
-                (secondOperandValue.includes(".") && noneIncluded)))
-            {
+            if (operatorValue === "÷" && numberIsAllZeros(secondOperandValue)) {
                 alert ("Cannot divide by zero!");
-            }
+            }   
             else if (state === "secondOperand" && secondOperandHasBeenEntered) {
                 let tempFirstOperandValue = (operate(firstOperandValue, secondOperandValue, operatorValue)).toString();
                 clear();
@@ -236,4 +231,17 @@ function operate(firstOperand, secondOperand, operator) {
             return divide(firstOperand, secondOperand);
             break;
     }
+}
+
+function numberIsAllZeros(number) {
+    const excludedNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+        const noneIncluded = excludedNumbers.every(num => !number.includes(num));
+        if (number === "0" || number === "0." || number == "0.0" ||
+            (number.length > 2 && number.substring(0,3) == "0.0" && 
+            (number.includes(".") && noneIncluded))) {
+                return true;
+        }
+        else {
+            return false;
+        }
 }
