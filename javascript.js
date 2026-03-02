@@ -138,6 +138,7 @@ function handleButtonPush(buttonValue) {
                     break;   
                     
                 case "postCalculation":
+                    clear();
                     firstOperandValue = "0.";
                     displayText.value = firstOperandValue;
                     state = "firstOperand";
