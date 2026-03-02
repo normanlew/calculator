@@ -146,10 +146,15 @@ function handleButtonPush(buttonValue) {
 
                 case "secondOperand":
                     if (secondOperandHasBeenEntered) {
-                        firstOperandValue = operate(firstOperandValue, secondOperandValue, operatorValue);
-                        operatorValue = buttonValue;
-                        secondOperandValue = "0";
-                        displayText.value = firstOperandValue;
+                        if (operatorValue === "÷" && numberIsAllZeros(secondOperandValue)) {
+                            alert ("Cannot divide by zero!");
+                        }   
+                        else {
+                            firstOperandValue = operate(firstOperandValue, secondOperandValue, operatorValue);
+                            operatorValue = buttonValue;
+                            secondOperandValue = "0";
+                            displayText.value = firstOperandValue;
+                        }
                     }
                     else {
                         operatorValue = buttonValue
