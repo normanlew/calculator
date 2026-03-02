@@ -78,12 +78,14 @@ function handleButtonPush(buttonValue) {
 
         else if (buttonValue === "+ / −") {
             if (state === "postCalculation") {
-                if (firstOperandValue.includes("-")) {
-                    firstOperandValue = firstOperandValue.substring(1,);
-                }
-                else {
-                    firstOperandValue = "-" + firstOperandValue;
-                }
+                // if (firstOperandValue.includes("-")) {
+                //     firstOperandValue = firstOperandValue.substring(1,);
+                // }
+                // else {
+                //     firstOperandValue = "-" + firstOperandValue;
+                // }
+                clear();
+                firstOperandValue = "-0";
                 displayText.value = firstOperandValue;  
             }
             else if (state === "secondOperand" && secondOperandValueIsPostCalculation) {
