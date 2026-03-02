@@ -170,19 +170,15 @@ function handleButtonPush(buttonValue) {
             }
         }
         else if (buttonValue === "=") {
-            if (operatorValue === "÷" && numberIsAllZeros(secondOperandValue)) {
+            if (operatorValue === "÷" && numberIsAllZeros(secondOperandValue) && secondOperandHasBeenEntered) {
                 alert ("Cannot divide by zero!");
             }   
             else if (state === "secondOperand" && secondOperandHasBeenEntered) {
                 let tempFirstOperandValue = (operate(firstOperandValue, secondOperandValue, operatorValue)).toString();
                 clear();
                 firstOperandValue = tempFirstOperandValue;
+                state = "postCalculation";
                 displayText.value = firstOperandValue;
-                // firstOperandValue = (operate(firstOperandValue, secondOperandValue, operatorValue)).toString();
-                // secondOperandValue = "0";
-                // state = "postCalculation";
-                // secondOperandHasBeenEntered = false;
-                // displayText.value = firstOperandValue;
             }
         }
     }
@@ -227,12 +223,6 @@ function operate(firstOperand, secondOperand, operator) {
             break;
 
         case "÷":
-            const regex = /[^1-9]/g;
-            // if (secondOperand === "0" || 
-            //     (secondOperand.length > 1 && secondOperand.includes(".") && regex.test(secondOperand.substring(2,)))
-            // ) {
-            //     alert ("Cannot divide by zero!");
-            // }
             return divide(firstOperand, secondOperand);
             break;
     }
