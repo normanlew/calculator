@@ -20,11 +20,6 @@ function clear() {
 clear();
 
 function handleButtonPush(buttonValue) {
-    // console.log("state: " + state);
-    // console.log("firstOperandValue: " + firstOperandValue);
-    // console.log("secondOperandValue: " + secondOperandValue);
-    // console.log("operatorValue: " + operatorValue);
-    // console.log("secondOperandValueIsPostCalculation: " + secondOperandValueIsPostCalculation);
     if(buttonValue === "Clear") {
         clear();
     }
@@ -78,12 +73,6 @@ function handleButtonPush(buttonValue) {
 
         else if (buttonValue === "+ / −") {
             if (state === "postCalculation") {
-                // if (firstOperandValue.includes("-")) {
-                //     firstOperandValue = firstOperandValue.substring(1,);
-                // }
-                // else {
-                //     firstOperandValue = "-" + firstOperandValue;
-                // }
                 clear();
                 firstOperandValue = "-0";
                 displayText.value = firstOperandValue;  
@@ -159,10 +148,8 @@ function handleButtonPush(buttonValue) {
                     if (secondOperandHasBeenEntered) {
                         firstOperandValue = operate(firstOperandValue, secondOperandValue, operatorValue);
                         operatorValue = buttonValue;
-                        // secondOperandValueIsPostCalculation = true;
                         secondOperandValue = "0";
                         displayText.value = firstOperandValue;
-                        // state = "postCalculation";
                     }
                     else {
                         operatorValue = buttonValue
@@ -178,24 +165,27 @@ function handleButtonPush(buttonValue) {
             }
         }
         else if (buttonValue === "=") {
-            if (state === "secondOperand" && secondOperandHasBeenEntered) {
-                firstOperandValue = (operate(firstOperandValue, secondOperandValue, operatorValue)).toString();
-                // state = "firstOperand";
-                secondOperandValue = "0";
-                state = "postCalculation";
-                // secondOperandValueIsPostCalculation = true;
-                secondOperandHasBeenEntered = false;
+            const excludedNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
+            const noneIncluded = excludedNumbers.every(num => !secondOperandValue.includes(num));
+            if (secondOperandValue === "0" || secondOperandValue === "0." || secondOperandValue == "0.0" ||
+                (secondOperandValue.length > 2 && secondOperandValue.substring(0,3) == "0.0" && 
+                (secondOperandValue.includes(".") && noneIncluded)))
+            {
+                alert ("Cannot divide by zero!");
+            }
+            else if (state === "secondOperand" && secondOperandHasBeenEntered) {
+                let tempFirstOperandValue = (operate(firstOperandValue, secondOperandValue, operatorValue)).toString();
+                clear();
+                firstOperandValue = tempFirstOperandValue;
                 displayText.value = firstOperandValue;
+                // firstOperandValue = (operate(firstOperandValue, secondOperandValue, operatorValue)).toString();
+                // secondOperandValue = "0";
+                // state = "postCalculation";
+                // secondOperandHasBeenEntered = false;
+                // displayText.value = firstOperandValue;
             }
         }
     }
-    // console.log("--------------------");
-    // console.log("state: " + state);
-    // console.log("firstOperandValue: " + firstOperandValue);
-    // console.log("secondOperandValue: " + secondOperandValue);
-    // console.log("operatorValue: " + operatorValue);
-    // console.log("secondOperandValueIsPostCalculation: " + secondOperandValueIsPostCalculation);
-    // console.log("\n\n\n")
 }
 
 function add(num1, num2) {
@@ -237,6 +227,12 @@ function operate(firstOperand, secondOperand, operator) {
             break;
 
         case "÷":
+            const regex = /[^1-9]/g;
+            // if (secondOperand === "0" || 
+            //     (secondOperand.length > 1 && secondOperand.includes(".") && regex.test(secondOperand.substring(2,)))
+            // ) {
+            //     alert ("Cannot divide by zero!");
+            // }
             return divide(firstOperand, secondOperand);
             break;
     }
