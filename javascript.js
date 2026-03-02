@@ -2,6 +2,7 @@ let state = "firstOperand"; // possible values of state are firstOperand, second
 let firstOperandValue = "0";
 let secondOperandValue = "0";
 let secondOperandValueIsPostCalculation = false;
+let secondOperandHasBeenEntered = false;
 let operatorValue = "";
 
 const displayText = document.getElementById("result");
@@ -9,6 +10,7 @@ const displayText = document.getElementById("result");
 function clear() {
     state = "firstOperand";
     secondOperandValueIsPostCalculation = false
+    secondOperandHasBeenEntered = false;
     firstOperandValue = "0";
     secondOperandValue = "0"
     operatorValue = ""
@@ -18,6 +20,11 @@ function clear() {
 clear();
 
 function handleButtonPush(buttonValue) {
+    // console.log("state: " + state);
+    // console.log("firstOperandValue: " + firstOperandValue);
+    // console.log("secondOperandValue: " + secondOperandValue);
+    // console.log("operatorValue: " + operatorValue);
+    // console.log("secondOperandValueIsPostCalculation: " + secondOperandValueIsPostCalculation);
     if(buttonValue === "Clear") {
         clear();
     }
@@ -30,11 +37,15 @@ function handleButtonPush(buttonValue) {
                 displayText.value = buttonValue;
                 firstOperandValue = buttonValue;
                 state = "firstOperand";
+                secondOperandValue = "0";
+                secondOperandValueIsPostCalculation = false;
             }   
             else {
                 if (state === "secondOperand" && secondOperandValueIsPostCalculation) {
+                    console.log("here");
                     secondOperandValue = buttonValue;
                     secondOperandValueIsPostCalculation = false;
+                    secondOperandHasBeenEntered = true;
                     displayText.value = secondOperandValue;
                 }       
                 else {
@@ -58,6 +69,7 @@ function handleButtonPush(buttonValue) {
                     }
                     else if (state === "secondOperand") {
                         secondOperandValue = numberToDisplay;
+                        secondOperandHasBeenEntered = true;
                     }
                     displayText.value = numberToDisplay;
                 }
@@ -77,6 +89,7 @@ function handleButtonPush(buttonValue) {
             else if (state === "secondOperand" && secondOperandValueIsPostCalculation) {
                 secondOperandValue = "-0";
                 secondOperandValueIsPostCalculation = false;
+                secondOperandHasBeenEntered = true;
                 displayText.value = secondOperandValue;
             } 
             else {
@@ -96,6 +109,7 @@ function handleButtonPush(buttonValue) {
                 }
                 else {
                     secondOperandValue = numberToDisplay;
+                    secondOperandHasBeenEntered = true;
                 }
                 displayText.value = numberToDisplay;
             }
@@ -134,33 +148,51 @@ function handleButtonPush(buttonValue) {
                 case "firstOperand":
                     operatorValue = buttonValue;
                     state = "secondOperand";
+                    secondOperandHasBeenEntered = false;
+                    secondOperandValue = "0";
                     break;
 
                 case "secondOperand":
-                    if (!secondOperandValueIsPostCalculation) {
+                    if (secondOperandHasBeenEntered) {
                         firstOperandValue = operate(firstOperandValue, secondOperandValue, operatorValue);
                         operatorValue = buttonValue;
-                        state = "postCalculation";
-                        secondOperandValueIsPostCalculation = true;
+                        // secondOperandValueIsPostCalculation = true;
+                        secondOperandValue = "0";
                         displayText.value = firstOperandValue;
+                        // state = "postCalculation";
+                    }
+                    else {
+                        operatorValue = buttonValue
                     }
                     break;
 
                 case "postCalculation":
                     operatorValue = buttonValue;
                     state = "secondOperand";
+                    secondOperandHasBeenEntered = false;
+                    secondOperandValue = "0";
                     break;
             }
         }
         else if (buttonValue === "=") {
-            if (!(operatorValue === "")) {
+            if (state === "secondOperand" && secondOperandHasBeenEntered) {
                 firstOperandValue = (operate(firstOperandValue, secondOperandValue, operatorValue)).toString();
+                // state = "firstOperand";
+                secondOperandValue = "0";
                 state = "postCalculation";
-                secondOperandValueIsPostCalculation = true;
+                // secondOperandValueIsPostCalculation = true;
+                secondOperandHasBeenEntered = false;
                 displayText.value = firstOperandValue;
             }
         }
     }
+    // console.log("--------------------");
+    // console.log("state: " + state);
+    // console.log("firstOperandValue: " + firstOperandValue);
+    // console.log("secondOperandValue: " + secondOperandValue);
+    // console.log("operatorValue: " + operatorValue);
+    // console.log("secondOperandValueIsPostCalculation: " + secondOperandValueIsPostCalculation);
+    // console.log("\n\n\n")
 }
 
 function add(num1, num2) {
