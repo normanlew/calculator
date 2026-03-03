@@ -71,7 +71,6 @@ function handleButtonPush(buttonValue) {
                 }
             }
         }    
-
         else if (buttonValue === "+ / −") {
             if (state === "postCalculation") {
                 clear();
@@ -84,29 +83,26 @@ function handleButtonPush(buttonValue) {
                 secondOperandHasBeenEntered = true;
                 displayText.value = secondOperandValue;
             } 
-            else {
-                let numberToDisplay = displayText.value;
-                if (numberToDisplay === "0") {
-                    numberToDisplay = "-0";
-                }
-                else if (numberToDisplay === "-0") {
-                    numberToDisplay = "0";
+            else if (state === "firstOperand") {
+                if (firstOperandValue[0] === "-") {
+                    firstOperandValue = firstOperandValue.substring(1);
                 }
                 else {
-                    let numberToDisplayNumber = -Number(numberToDisplay);
-                    numberToDisplay = numberToDisplayNumber.toString();
+                    firstOperandValue = "-" + firstOperandValue;
                 }
-                if (state === "firstOperand") {
-                    firstOperandValue = numberToDisplay;
+                displayText.value = firstOperandValue;
+            }
+            else if (state === "secondOperand") {
+                if (secondOperandValue[0] === "-") {
+                    secondOperandValue = secondOperandValue.substring(1);
                 }
                 else {
-                    secondOperandValue = numberToDisplay;
-                    secondOperandHasBeenEntered = true;
+                    secondOperandValue = "-" + secondOperandValue;
                 }
-                displayText.value = numberToDisplay;
+                secondOperandHasBeenEntered = true;
+                displayText.value = secondOperandValue;
             }
         }
-
         else if (buttonValue === ".") {
             switch (state) {
                 case "firstOperand":
