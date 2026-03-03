@@ -156,7 +156,6 @@ function handleButtonPush(buttonValue) {
 
                 case "secondOperand":
                     if (triedToDivideByZero) {
-                        console.log("HERE");
                         operatorValue = buttonValue;
                         triedToDivideByZero = false;
                     }
@@ -166,13 +165,28 @@ function handleButtonPush(buttonValue) {
                             alert ("Cannot divide by zero!");
                         }   
                         else {
-                            firstOperandValue = operate(firstOperandValue, secondOperandValue, operatorValue);
+                            firstOperandValue = (operate(firstOperandValue, secondOperandValue, operatorValue)).toString();
                             operatorValue = buttonValue;
                             secondOperandValue = "0";
                             secondOperandHasBeenEntered = false;
                             triedToDivideByZero = false;
                             state = "secondOperand";
-                            displayText.value = firstOperandValue;
+                            let unRoundedDisplay = firstOperandValue.toString();
+                            console.log("unroundeddisplay: " + unRoundedDisplay);
+                            if (unRoundedDisplay.includes(".")) {
+                                let indexOfDecimal = unRoundedDisplay.indexOf(".");
+                                console.log("Index of decimal: " + indexOfDecimal);
+                                if (unRoundedDisplay.length > indexOfDecimal + 1) {
+                                    console.log("unroundedDisplayLength: " + unRoundedDisplay.length);
+                                    console.log("index of decimal + 1" + (indexOfDecimal + 1));
+                                    console.log("substring: " + unRoundedDisplay.substring(indexOfDecimal + 1));
+                                    console.log("has length: " +unRoundedDisplay.substring(indexOfDecimal + 1).length);
+                                    if (unRoundedDisplay.substring(indexOfDecimal + 1).length > 5) {
+                                        unRoundedDisplay = Number(unRoundedDisplay).toFixed(5).toString();
+                                    }
+                                }
+                            }
+                            displayText.value = unRoundedDisplay;
                         }
                     }
                     else {
@@ -199,7 +213,22 @@ function handleButtonPush(buttonValue) {
                 clear();
                 firstOperandValue = tempFirstOperandValue;
                 state = "postCalculation";
-                displayText.value = firstOperandValue;
+                let unRoundedDisplay = firstOperandValue.toString();
+                console.log("unroundeddisplay: " + unRoundedDisplay);
+                if (unRoundedDisplay.includes(".")) {
+                    let indexOfDecimal = unRoundedDisplay.indexOf(".");
+                    console.log("Index of decimal: " + indexOfDecimal);
+                    if (unRoundedDisplay.length > indexOfDecimal + 1) {
+                        console.log("unroundedDisplayLength: " + unRoundedDisplay.length);
+                        console.log("index of decimal + 1" + (indexOfDecimal + 1));
+                        console.log("substring: " + unRoundedDisplay.substring(indexOfDecimal + 1));
+                        console.log("has length: " +unRoundedDisplay.substring(indexOfDecimal + 1).length);
+                        if (unRoundedDisplay.substring(indexOfDecimal + 1).length > 5) {
+                            unRoundedDisplay = Number(unRoundedDisplay).toFixed(5).toString();
+                        }
+                    }
+                }
+                displayText.value = unRoundedDisplay;
             }
         }
     }
