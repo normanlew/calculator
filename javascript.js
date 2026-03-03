@@ -22,14 +22,6 @@ function clear() {
 clear();
 
 function handleButtonPush(buttonValue) {
-    console.log("state: " + state);
-    console.log("operatorValue: " + operatorValue);
-    console.log("firstOperandValue: " + firstOperandValue);
-    console.log("secondOperandValue: " + secondOperandValue);
-    console.log("secondOperandValueHasBeenEntered: " + secondOperandHasBeenEntered);
-    console.log("secondOperandValueIsPostCalculation: " + secondOperandValueIsPostCalculation);
-    console.log("triedToDivideByZero: " + triedToDivideByZero);
-    console.log("-------------------------------------------------");
     if(buttonValue === "Clear") {
         clear();
     }
@@ -47,7 +39,6 @@ function handleButtonPush(buttonValue) {
             }   
             else {
                 if (state === "secondOperand" && secondOperandValueIsPostCalculation) {
-                    console.log("here");
                     secondOperandValue = buttonValue;
                     secondOperandValueIsPostCalculation = false;
                     secondOperandHasBeenEntered = true;
@@ -172,15 +163,9 @@ function handleButtonPush(buttonValue) {
                             triedToDivideByZero = false;
                             state = "secondOperand";
                             let unRoundedDisplay = firstOperandValue.toString();
-                            console.log("unroundeddisplay: " + unRoundedDisplay);
                             if (unRoundedDisplay.includes(".")) {
                                 let indexOfDecimal = unRoundedDisplay.indexOf(".");
-                                console.log("Index of decimal: " + indexOfDecimal);
                                 if (unRoundedDisplay.length > indexOfDecimal + 1) {
-                                    console.log("unroundedDisplayLength: " + unRoundedDisplay.length);
-                                    console.log("index of decimal + 1" + (indexOfDecimal + 1));
-                                    console.log("substring: " + unRoundedDisplay.substring(indexOfDecimal + 1));
-                                    console.log("has length: " +unRoundedDisplay.substring(indexOfDecimal + 1).length);
                                     if (unRoundedDisplay.substring(indexOfDecimal + 1).length > 5) {
                                         unRoundedDisplay = Number(unRoundedDisplay).toFixed(5).toString();
                                     }
@@ -214,15 +199,9 @@ function handleButtonPush(buttonValue) {
                 firstOperandValue = tempFirstOperandValue;
                 state = "postCalculation";
                 let unRoundedDisplay = firstOperandValue.toString();
-                console.log("unroundeddisplay: " + unRoundedDisplay);
                 if (unRoundedDisplay.includes(".")) {
                     let indexOfDecimal = unRoundedDisplay.indexOf(".");
-                    console.log("Index of decimal: " + indexOfDecimal);
                     if (unRoundedDisplay.length > indexOfDecimal + 1) {
-                        console.log("unroundedDisplayLength: " + unRoundedDisplay.length);
-                        console.log("index of decimal + 1" + (indexOfDecimal + 1));
-                        console.log("substring: " + unRoundedDisplay.substring(indexOfDecimal + 1));
-                        console.log("has length: " +unRoundedDisplay.substring(indexOfDecimal + 1).length);
                         if (unRoundedDisplay.substring(indexOfDecimal + 1).length > 5) {
                             unRoundedDisplay = Number(unRoundedDisplay).toFixed(5).toString();
                         }
@@ -281,8 +260,8 @@ function operate(firstOperand, secondOperand, operator) {
 function numberIsAllZeros(number) {
     const excludedNumbers = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
         const noneIncluded = excludedNumbers.every(num => !number.includes(num));
-        if (number === "0" || number === "0." || number == "0.0" ||
-            (number.length > 2 && number.substring(0,3) == "0.0" && 
+        if (number === "0" || number === "0." || number == "0.0" || number === "-0" || number === "-0.0" ||
+            (number.length > 2 && (number.substring(0,3) == "0.0" || number.substring(0,4) == "-0.0") && 
             (number.includes(".") && noneIncluded))) {
                 return true;
         }
